@@ -1,7 +1,12 @@
 import "./App.css";
+import Mainlayout from "./layouts/Mainlayout";
 
 function App() {
-  return <h1 className="bg-red-500">react-redux project</h1>;
+  return (
+    <div>
+      <Mainlayout></Mainlayout>
+    </div>
+  );
 }
 
 export default App;

@@ -1,24 +1,48 @@
 import { createBrowserRouter } from "react-router-dom";
+import App from "../App";
+import SecondLayOut from "../layouts/SecondLayOut";
+import AllBooks from "../page/AllBooks";
 import Home from "../page/Home";
 import Login from "../page/Login";
-import NoteFound from "../page/NoteFound";
+import NotFoundPage from "../page/NotFoundPage";
+import SignIn from "../page/SignIn";
 
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <Home></Home>,
+    element: <App />,
+    children: [
+      {
+        index: true,
+        element: <Home />,
+      },
+      {
+        path: "/home",
+        element: <Home />,
+      },
+      {
+        path: "/allbooks",
+        element: <AllBooks></AllBooks>,
+      },
+    ],
   },
   {
-    path: "/home",
-    element: <Home></Home>,
-  },
-  {
-    path: "/login",
-    element: <Login></Login>,
+    path: "/",
+    element: <SecondLayOut></SecondLayOut>,
+    children: [
+      {
+        path: "/signup",
+        element: <SignIn></SignIn>,
+      },
+      {
+        path: "/login",
+        element: <Login></Login>,
+      },
+    ],
   },
   {
     path: "*",
-    element: <NoteFound></NoteFound>,
+    element: <NotFoundPage></NotFoundPage>,
   },
 ]);
 
