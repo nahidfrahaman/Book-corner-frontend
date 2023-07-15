@@ -1,11 +1,10 @@
 import { configureStore } from "@reduxjs/toolkit";
 import { api } from "./api/api";
-import counterReducer from "./features/counter/counterSlice";
+
 import contentReducer from "./features/toggleContent/contentReducer";
 
 export const store = configureStore({
   reducer: {
-    counter: counterReducer,
     contentVisible: contentReducer,
     [api.reducerPath]: api.reducer,
   },

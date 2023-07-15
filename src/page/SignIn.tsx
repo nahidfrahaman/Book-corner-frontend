@@ -1,7 +1,28 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
+/* eslint-disable @typescript-eslint/no-misused-promises */
+import { useForm } from "react-hook-form";
 import { Link } from "react-router-dom";
 import img from "../assets/undraw_sign_up_n6im (1).svg";
 
+interface SignupFormInputs {
+  email: string;
+  password: string;
+  firstName: string;
+  lastName: string;
+  userName: string;
+}
+
 export default function SignIn() {
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<SignupFormInputs>();
+
+  const onSubmit = (data: SignupFormInputs) => {
+    console.log(data);
+  };
+
   return (
     <div className="container mx-auto">
       <section className="bg-white">
@@ -50,7 +71,10 @@ export default function SignIn() {
                 </h1>
               </div>
 
-              <form action="#" className="mt-8 grid grid-cols-6 gap-6">
+              <form
+                onSubmit={handleSubmit(onSubmit)}
+                className="mt-8 grid grid-cols-6 gap-6"
+              >
                 <div className="col-span-6 sm:col-span-3">
                   <label
                     htmlFor="FirstName"
@@ -62,8 +86,10 @@ export default function SignIn() {
                   <input
                     type="text"
                     id="FirstName"
-                    name="first_name"
                     className="mt-1 w-full rounded-md border-gray-200 bg-white text-sm text-gray-700 shadow-sm p-2"
+                    {...register("firstName", {
+                      required: "firsName is required",
+                    })}
                   />
                 </div>
 
@@ -78,8 +104,27 @@ export default function SignIn() {
                   <input
                     type="text"
                     id="LastName"
-                    name="last_name"
                     className="mt-1 w-full rounded-md border-gray-200 bg-white text-sm text-gray-700 shadow-sm p-2"
+                    {...register("lastName", {
+                      required: "lastName is required",
+                    })}
+                  />
+                </div>
+                <div className="col-span-6 sm:col-span-6">
+                  <label
+                    htmlFor="LastName"
+                    className="block text-sm font-medium text-gray-700"
+                  >
+                    UserName
+                  </label>
+
+                  <input
+                    type="text"
+                    id="userName"
+                    className="mt-1 w-full rounded-md border-gray-200 bg-white text-sm text-gray-700 shadow-sm p-2"
+                    {...register("userName", {
+                      required: "UserName is required",
+                    })}
                   />
                 </div>
 
@@ -94,8 +139,8 @@ export default function SignIn() {
                   <input
                     type="email"
                     id="Email"
-                    name="email"
                     className="mt-1 w-full rounded-md border-gray-200 bg-white text-sm text-gray-700 shadow-sm p-2"
+                    {...register("email", { required: "Email is required" })}
                   />
                 </div>
 
@@ -110,48 +155,23 @@ export default function SignIn() {
                   <input
                     type="password"
                     id="Password"
-                    name="password"
                     className="mt-1 w-full rounded-md border-gray-200 bg-white text-sm text-gray-700 shadow-sm p-2"
+                    {...register("password", {
+                      required: "password is required",
+                    })}
                   />
-                </div>
-
-                <div className="col-span-6 sm:col-span-3">
-                  <label
-                    htmlFor="PasswordConfirmation"
-                    className="block text-sm font-medium text-gray-700"
-                  >
-                    Password Confirmation
-                  </label>
-
-                  <input
-                    type="password"
-                    id="PasswordConfirmation"
-                    name="password_confirmation"
-                    className="mt-1 w-full rounded-md border-gray-200 bg-white text-sm text-gray-700 shadow-sm p-2"
-                  />
-                </div>
-
-                <div className="col-span-6"></div>
-
-                <div className="col-span-6">
-                  <p className="text-sm text-gray-500">
-                    If already have account plz,{" "}
-                    <Link to="/login" className=" text-teal-700 underline">
-                      login
-                    </Link>
-                  </p>
                 </div>
 
                 <div className="col-span-6 sm:flex sm:items-center sm:gap-4">
-                  <button className="inline-block shrink-0 rounded-md border border-blue-600 bg-blue-600 px-12 py-3 text-sm font-medium text-white transition hover:bg-transparent hover:text-blue-600 focus:outline-none focus:ring active:text-blue-500">
+                  <button className="inline-block shrink-0 rounded-md border border-tel-700 bg-teal-700 px-12 py-3 text-sm font-medium text-white transition hover:bg-transparent hover:text-teal-700 focus:outline-none focus:ring active:text-blue-500">
                     Create an account
                   </button>
 
                   <p className="mt-4 text-sm text-gray-500 sm:mt-0">
                     Already have an account?
-                    <a href="#" className="text-gray-700 underline">
-                      Log in
-                    </a>
+                    <Link to="/login" className=" text-teal-700 underline">
+                      login
+                    </Link>
                     .
                   </p>
                 </div>

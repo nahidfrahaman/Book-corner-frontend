@@ -2,7 +2,8 @@
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
 /* eslint-disable @typescript-eslint/no-unsafe-call */
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
-import { useGetBooksQuery } from "../../redux/api/api";
+
+import { useGetBooksQuery } from "../../redux/features/toggleContent/Book/bookendpoint";
 import { IBooks } from "../../type/commonInterface";
 import CardDetails from "./CardDetails";
 
