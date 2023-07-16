@@ -1,12 +1,25 @@
+import { Toaster, toast } from "react-hot-toast";
 import { Link } from "react-router-dom";
 import { isContentVisible } from "../redux/features/toggleContent/contentReducer";
+import { isUserExist } from "../redux/features/user/userSlice";
 import { useAppDispatch, useAppSelector } from "../redux/hooks";
 
 export default function Navbar() {
   const dispatch = useAppDispatch();
   const { contentVisible } = useAppSelector((state) => state.contentVisible);
+  const { email } = useAppSelector((state) => state.isUserExist);
+
   const handleToggle = () => {
     dispatch(isContentVisible());
+  };
+
+  //handle logout
+
+  const handlelogOut = () => {
+    console.log("logout");
+    dispatch(isUserExist(null));
+    localStorage.setItem("accessToken", "");
+    toast.success("user logout sucessfuly");
   };
 
   return (
@@ -62,7 +75,7 @@ export default function Navbar() {
                 </Link>
               </li>
               <li>
-                <Link className="hover:text-gray-500" to="/allbooks">
+                <Link className="hover:text-gray-500" to="/allbookspage">
                   All Books
                 </Link>
               </li>
@@ -70,21 +83,32 @@ export default function Navbar() {
           </nav>
 
           <div className="flex items-center gap-4">
-            <div className="sm:flex sm:gap-4">
-              <Link
-                to="/login"
-                className="block rounded-md bg-teal-600 px-5 py-2.5 text-sm font-medium text-white transition hover:bg-teal-700"
-              >
-                LogIN
-              </Link>
+            {email ? (
+              <div>
+                <button
+                  onClick={() => handlelogOut()}
+                  className="rounded-md bg-teal-600 px-5 py-2.5 text-sm font-medium text-white transition hover:bg-teal-700"
+                >
+                  logOut
+                </button>
+              </div>
+            ) : (
+              <div className="sm:flex sm:gap-4">
+                <Link
+                  to="/login"
+                  className="block rounded-md bg-teal-600 px-5 py-2.5 text-sm font-medium text-white transition hover:bg-teal-700"
+                >
+                  LogIN
+                </Link>
 
-              <Link
-                to="/signup"
-                className="hidden rounded-md bg-gray-100 px-5 py-2.5 text-sm font-medium text-teal-600 transition hover:text-teal-600/75 sm:block"
-              >
-                SignUp
-              </Link>
-            </div>
+                <Link
+                  to="/signup"
+                  className="hidden rounded-md bg-gray-100 px-5 py-2.5 text-sm font-medium text-teal-600 transition hover:text-teal-600/75 sm:block"
+                >
+                  SignUp
+                </Link>
+              </div>
+            )}
 
             <button
               onClick={() => handleToggle()}
@@ -108,6 +132,7 @@ export default function Navbar() {
             </button>
           </div>
         </div>
+        <Toaster />
       </div>
     </header>
   );

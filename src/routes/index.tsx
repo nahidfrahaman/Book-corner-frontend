@@ -3,9 +3,10 @@ import App from "../App";
 import SecondLayOut from "../layouts/SecondLayOut";
 import AllBooks from "../page/AllBooks";
 import Home from "../page/Home";
-import Login from "../page/Login";
+
+import Login from "../page/LogIN";
 import NotFoundPage from "../page/NotFoundPage";
-import SignIn from "../page/SignIn";
+import SignUP from "../page/SignIn";
 
 const router = createBrowserRouter([
   {
@@ -21,7 +22,7 @@ const router = createBrowserRouter([
         element: <Home />,
       },
       {
-        path: "/allbooks",
+        path: "/allbookspage",
         element: <AllBooks></AllBooks>,
       },
     ],
@@ -32,7 +33,7 @@ const router = createBrowserRouter([
     children: [
       {
         path: "/signup",
-        element: <SignIn></SignIn>,
+        element: <SignUP></SignUP>,
       },
       {
         path: "/login",

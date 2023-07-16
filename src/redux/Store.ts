@@ -2,10 +2,12 @@ import { configureStore } from "@reduxjs/toolkit";
 import { api } from "./api/api";
 
 import contentReducer from "./features/toggleContent/contentReducer";
+import userReduer from "./features/user/userSlice";
 
 export const store = configureStore({
   reducer: {
     contentVisible: contentReducer,
+    isUserExist: userReduer,
     [api.reducerPath]: api.reducer,
   },
   middleware: (getDefaultMiddleware) =>

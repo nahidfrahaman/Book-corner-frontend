@@ -1,8 +1,12 @@
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
+/* eslint-disable @typescript-eslint/no-floating-promises */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-misused-promises */
 import { useForm } from "react-hook-form";
 import { Link } from "react-router-dom";
 import img from "../assets/undraw_sign_up_n6im (1).svg";
+import { useCreateUserMutation } from "../redux/features/user/userendpoint";
 
 interface SignupFormInputs {
   email: string;
@@ -12,16 +16,30 @@ interface SignupFormInputs {
   userName: string;
 }
 
-export default function SignIn() {
+export default function SignUP() {
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm<SignupFormInputs>();
-
+  const [createUser, { data, isLoading, isError }] = useCreateUserMutation();
+  console.log(isLoading, isError);
   const onSubmit = (data: SignupFormInputs) => {
-    console.log(data);
+    const option = {
+      userName: data.userName,
+      password: data.password,
+      name: {
+        firstName: data.firstName,
+        lastName: data.lastName,
+      },
+      email: data.email,
+    };
+    createUser(option);
   };
+  if (data?.data?.userName) {
+    console.log("hurrah ase ");
+    alert("user created successfuly");
+  }
 
   return (
     <div className="container mx-auto">

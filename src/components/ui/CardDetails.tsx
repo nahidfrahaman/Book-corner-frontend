@@ -1,14 +1,14 @@
+import { Link } from "react-router-dom";
 import { IBooks } from "../../type/commonInterface";
 interface CardDetailsProps {
   book: IBooks;
 }
 
 export default function CardDetails({ book }: CardDetailsProps) {
-  console.log(book);
   return (
     <div>
       <div className="h-76 rounded-lg bg-gray-100 my-4">
-        <a href="#" className="group relative block bg-black">
+        <Link to="/allbookspage" className="group relative block bg-black">
           <img
             alt="Developer"
             src="https://images.unsplash.com/photo-1603871165848-0aa92c869fa1?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=772&q=80"
@@ -34,7 +34,7 @@ export default function CardDetails({ book }: CardDetailsProps) {
               </div>
             </div>
           </div>
-        </a>
+        </Link>
       </div>
     </div>
   );
