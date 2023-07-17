@@ -16,7 +16,7 @@ interface IDecode {
 export default function Navbar() {
   const token: string | null = localStorage.getItem("accessToken");
   const dispatch = useAppDispatch();
-  console.log("token from home:", token);
+
   if (token) {
     const decoded: IDecode = jwt_decode(token);
     dispatch(addtoken(token));
