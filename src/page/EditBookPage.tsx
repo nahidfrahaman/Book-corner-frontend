@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-non-null-assertion */
+/* eslint-disable @typescript-eslint/no-extra-non-null-assertion */
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable @typescript-eslint/no-unsafe-argument */
 /* eslint-disable react-hooks/rules-of-hooks */
@@ -7,72 +9,37 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-misused-promises */
 import { useForm } from "react-hook-form";
-import { Toaster, toast } from "react-hot-toast";
-import { Link, useNavigate } from "react-router-dom";
-import img from "../assets/undraw_sign_up_n6im (1).svg";
-import { useLoginUserMutation } from "../redux/features/user/userendpoint";
-import { useAppDispatch } from "../redux/hooks";
+import { Toaster } from "react-hot-toast";
+import { useParams } from "react-router-dom";
+import { useGetSingleBookQuery } from "../redux/features/Book/bookendpoint";
 
 interface SignupFormInputs {
-  email: string;
-  password: string;
-  firstName: string;
-  lastName: string;
-  userName: string;
+  title: string;
+  author: string;
+  genre: string;
+  publicationDate: Date;
+  review: [];
 }
 
-export default function Login() {
-  const dispatch = useAppDispatch();
-
-  const navigate = useNavigate();
+export default function EditBookPage() {
+  const { id } = useParams();
+  console.log(id);
+  const { data } = useGetSingleBookQuery(id);
+  const book = data?.data;
   const { register, handleSubmit } = useForm<SignupFormInputs>();
-  const [loginUser, { data, isLoading }] = useLoginUserMutation();
-  const onSubmit = (data: SignupFormInputs) => {
-    const option = {
-      userName: data.userName,
-      password: data.password,
-    };
-    loginUser(option);
-  };
 
-  if (isLoading) {
-    return (
-      <div className="w-16 h-16 border-4 border-dashed rounded-full animate-spin dark:border-violet-400"></div>
-    );
-  }
-  const accessToken = data?.data?.accessToken;
-  if (accessToken) {
-    localStorage.setItem("accessToken", accessToken as string);
-    navigate("/");
-    toast.success("user login successfuly");
-  }
+  const onSubmit = (data: SignupFormInputs) => {
+    console.log(data);
+  };
 
   return (
     <div>
       <div className="container mx-auto">
         <section className="bg-white">
           <div className="lg:grid lg:min-h-screen lg:grid-cols-12">
-            <section className="relative flex h-32 items-end bg-gray-900 lg:col-span-5 lg:h-full xl:col-span-6">
-              <img
-                alt="Night"
-                src={img}
-                className="hidden  lg:block  absolute inset-0 h-full w-full ml-20  overflow-none"
-              />
-
-              <div className="hidden lg:relative lg:block lg:p-12">
-                <h2 className="mt-6 text-2xl font-bold text-white sm:text-3xl md:text-4xl">
-                  Welcome to BookCorner 🦑
-                </h2>
-
-                <p className="mt-4 leading-relaxed text-white/90">
-                  Please login
-                </p>
-              </div>
-            </section>
-
-            <main className="flex items-center justify-center px-8 py-8 sm:px-12 lg:col-span-7 lg:px-16 lg:py-12 xl:col-span-6">
+            <main className="flex items-center justify-center px-8 py-8 sm:px-12 lg:col-span-7 lg:px-16 lg:py-4 xl:col-span-6">
               <div className="max-w-xl lg:max-w-3xl">
-                <div className="relative -mt-16 block lg:hidden">
+                <div className="relative -mt-16 block">
                   <a
                     className="inline-flex h-16 w-16 items-center justify-center rounded-full bg-white text-blue-600 sm:h-20 sm:w-20"
                     href="/"
@@ -92,7 +59,7 @@ export default function Login() {
                   </a>
 
                   <h1 className="mt-2 text-2xl font-bold text-gray-900 sm:text-3xl md:text-4xl">
-                    Welcome to BookCorner
+                    Fill the from for Update
                   </h1>
                 </div>
 
@@ -105,15 +72,16 @@ export default function Login() {
                       htmlFor="LastName"
                       className="block text-sm font-medium text-gray-700"
                     >
-                      UserName
+                      Title
                     </label>
 
                     <input
                       type="text"
-                      id="userName"
+                      id="title"
+                      defaultValue={book?.title}
                       className="mt-1 w-full rounded-md border-gray-200 bg-white text-sm text-gray-700 shadow-sm p-2"
-                      {...register("userName", {
-                        required: "UserName is required",
+                      {...register("title", {
+                        required: "title is required",
                       })}
                     />
                   </div>
@@ -122,31 +90,60 @@ export default function Login() {
                       htmlFor="Password"
                       className="block text-sm font-medium text-gray-700"
                     >
-                      Password
+                      Author Name
                     </label>
 
                     <input
-                      type="password"
-                      id="Password"
+                      type="text"
+                      id="author"
+                      defaultValue={book?.author}
                       className="mt-1 w-full rounded-md border-gray-200 bg-white text-sm text-gray-700 shadow-sm p-2"
-                      {...register("password", {
-                        required: "password is required",
+                      {...register("author", {
+                        required: "author name is required",
+                      })}
+                    />
+                  </div>
+                  <div className="col-span-6 sm:col-span-6">
+                    <label
+                      htmlFor="Password"
+                      className="block text-sm font-medium text-gray-700"
+                    >
+                      Genre
+                    </label>
+
+                    <input
+                      type="text"
+                      id="genre"
+                      defaultValue={book?.genre}
+                      className="mt-1 w-full rounded-md border-gray-200 bg-white text-sm text-gray-700 shadow-sm p-2"
+                      {...register("genre", {
+                        required: "Genre is required",
+                      })}
+                    />
+                  </div>
+                  <div className="col-span-6 sm:col-span-6">
+                    <label
+                      htmlFor="Password"
+                      className="block text-sm font-medium text-gray-700"
+                    >
+                      publication Date
+                    </label>
+
+                    <input
+                      type="text"
+                      id="date"
+                      defaultValue={book?.publicationDate.substring(0, 10)}
+                      className="mt-1 w-full rounded-md border-gray-200 bg-white text-sm text-gray-700 shadow-sm p-2"
+                      {...register("publicationDate", {
+                        required: "Date is required",
                       })}
                     />
                   </div>
 
                   <div className="col-span-6 sm:flex sm:items-center sm:gap-4">
                     <button className="inline-block shrink-0 rounded-md border border-tel-700 bg-teal-700 px-12 py-3 text-sm font-medium text-white transition hover:bg-transparent hover:text-teal-700 focus:outline-none focus:ring active:text-blue-500">
-                      logIn
+                      Add new book
                     </button>
-
-                    <p className="mt-4 text-sm text-gray-500 sm:mt-0">
-                      Don't have an account?
-                      <Link to="/signup" className=" text-teal-700 underline">
-                        singup
-                      </Link>
-                      .
-                    </p>
                   </div>
                 </form>
               </div>

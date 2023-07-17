@@ -15,13 +15,21 @@ const bookenpoint = api.injectEndpoints({
         providesTags: ["addBook"],
       }),
     }),
-    createABook: builder.mutation({
-      query: (data) => ({
-        url: `/book/create-book`,
-        method: "POST",
-        body: data,
-      }),
-      invalidatesTags: ["addBook"],
+    addNewBook: builder.mutation({
+      query: (data) => (
+        console.log(data),
+        {
+          url: "/book/create-book",
+          method: "POST",
+          body: data,
+          headers: {
+            "content-type": "aplication/json",
+          },
+        }
+      ),
+    }),
+    getSingleBook: builder.query({
+      query: (id) => `/book/get-books/${id}`,
     }),
   }),
 });
@@ -30,5 +38,6 @@ export const {
   useGetBooksQuery,
   useGetallBooksMutation,
   useGetAllBooksQuery,
-  useCreateABookMutation,
+  useAddNewBookMutation,
+  useGetSingleBookQuery,
 } = bookenpoint;

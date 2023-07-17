@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-non-null-assertion */
+/* eslint-disable @typescript-eslint/no-extra-non-null-assertion */
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable @typescript-eslint/no-unsafe-argument */
 /* eslint-disable react-hooks/rules-of-hooks */
@@ -7,8 +9,8 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-misused-promises */
 import { useForm } from "react-hook-form";
-import { Toaster } from "react-hot-toast";
-import { useCreateABookMutation } from "../redux/features/Book/bookendpoint";
+import { Toaster, toast } from "react-hot-toast";
+import { useAddNewBookMutation } from "../redux/features/Book/bookendpoint";
 
 interface SignupFormInputs {
   title: string;
@@ -19,19 +21,29 @@ interface SignupFormInputs {
 }
 
 export default function AddNewBookPage() {
+  // const dispatch = useAppDispatch();
   const { register, handleSubmit } = useForm<SignupFormInputs>();
-  const [createBook, { data, isError }] = useCreateABookMutation();
+  const [addNewBook, { data, isLoading }] = useAddNewBookMutation();
+  if (isLoading) {
+    return <div>loading....</div>;
+  }
+
   console.log(data);
   const onSubmit = (data: SignupFormInputs) => {
-    const option = {
+    const createdData = {
       title: data.title,
       author: data.author,
       genre: data.genre,
       publicationDate: data.publicationDate,
       reviews: [],
     };
-    createBook(option);
+    console.log(createdData);
+    addNewBook(createdData);
   };
+
+  if (data) {
+    toast.success("book added successfuly");
+  }
 
   return (
     <div>
