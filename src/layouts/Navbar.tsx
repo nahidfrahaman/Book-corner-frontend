@@ -79,6 +79,13 @@ export default function Navbar() {
                   All Books
                 </Link>
               </li>
+              {email && (
+                <li>
+                  <Link className="hover:text-gray-500" to="/addnewbook">
+                    Add new book
+                  </Link>
+                </li>
+              )}
             </ul>
           </nav>
 

@@ -1,9 +1,8 @@
 import { IBooks } from "../../type/commonInterface";
 
 export default function BookCards({ book }: IBooks) {
-  console.log(book);
   const date = book.publicationDate;
-  console.log(date.substring(0, 10));
+
   return (
     <div>
       <article className="overflow-hidden rounded-lg shadow transition hover:shadow-lg">

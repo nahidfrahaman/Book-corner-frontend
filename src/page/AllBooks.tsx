@@ -1,26 +1,59 @@
+/* eslint-disable @typescript-eslint/no-empty-function */
+import { useEffect, useState } from "react";
+import { useForm } from "react-hook-form";
 import BookCards from "../components/ui/BookCards";
-import { useGetAllBooksQuery } from "../redux/features/Book/bookendpoint";
+import { useGetallBooksMutation } from "../redux/features/Book/bookendpoint";
 import { IBooks } from "../type/commonInterface";
 
 export default function AllBooks() {
-  const { data } = useGetAllBooksQuery(undefined);
-  console.log(data?.data);
+  const [searchData, setSearchData] = useState<string | undefined>();
+  const [getAllBooks, { data }] = useGetallBooksMutation({
+    refetchOnMountOrArgChange: true,
+    pollingInterval: 30000,
+  });
+  console.log(data);
+  console.log(searchData);
+
+  const { register, handleSubmit } = useForm<SignupFormInputs>();
+  const [isInitialRender, setIsInitialRender] = useState(true);
+
+  const onSubmit = (inputData: string) => {
+    setSearchData(inputData.searchItem);
+  };
+  useEffect(() => {
+    if (isInitialRender) {
+      setIsInitialRender(false);
+      getAllBooks(undefined);
+      return;
+    }
+
+    if (searchData) {
+      getAllBooks(searchData);
+    }
+  }, [searchData]);
+
+  // useEffect(() => {
+  //   getAllBooks(searchData);
+  // }, [searchData]);
 
   return (
     <div className="container mx-auto grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3 lg:gap-8">
       <div className="p-6  lg:h-screen dark:bg-teal-600 dark:text-gray-100">
         <div className="relative p-2 text-teal-600">
-          <label htmlFor="Search" className="sr-only p-2">
-            {" "}
-            Search{" "}
-          </label>
+          <form onSubmit={handleSubmit(onSubmit)}>
+            <label htmlFor="Search" className="sr-only p-2">
+              {" "}
+              Search{" "}
+            </label>
 
-          <input
-            type="text"
-            id="Search"
-            placeholder="Search for..."
-            className="w-full rounded-md border-gray-200 py-2.5 pe-10 shadow-sm sm:text-sm p-2"
-          />
+            <input
+              type="text"
+              id="Search"
+              placeholder="Search for..."
+              className="w-full rounded-md border-gray-200 py-2.5 pe-10 shadow-sm sm:text-sm p-2"
+              {...register("searchItem")}
+            />
+          </form>
 
           <span className="absolute inset-y-0 end-0 grid w-10 place-content-center">
             <button type="button" className="text-gray-600 hover:text-gray-700">
@@ -59,7 +92,6 @@ export default function AllBooks() {
             id="HeadlineAct"
             className="mt-1.5 w-full rounded-lg border-gray-300 text-gray-700 sm:text-sm p-2.5"
           >
-            <option value=""></option>
             <option value="fricton">fricton</option>
             <option value="non-fricton">non-friction</option>
           </select>
@@ -77,9 +109,11 @@ export default function AllBooks() {
             id="HeadlineAct"
             className="mt-1.5 w-full rounded-lg border-gray-300 text-gray-700 sm:text-sm p-2.5"
           >
-            <option value=""></option>
-            <option value="fricton">fricton</option>
-            <option value="non-fricton">non-friction</option>
+            {data?.data.map((book: IBooks) => (
+              <option value={book.publicationDate.toString().substring(0, 10)}>
+                {book.publicationDate.toString().substring(0, 10)}
+              </option>
+            ))}
           </select>
         </div>
       </div>
