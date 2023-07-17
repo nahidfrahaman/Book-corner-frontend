@@ -22,9 +22,16 @@ const bookenpoint = api.injectEndpoints({
           url: "/book/create-book",
           method: "POST",
           body: data,
-          headers: {
-            "content-type": "aplication/json",
-          },
+        }
+      ),
+    }),
+    updatedBook: builder.mutation({
+      query: (data) => (
+        console.log(data),
+        {
+          url: `/book/update/${data}`,
+          method: "PATCH",
+          body: data,
         }
       ),
     }),
@@ -40,4 +47,5 @@ export const {
   useGetAllBooksQuery,
   useAddNewBookMutation,
   useGetSingleBookQuery,
+  useUpdatedBookMutation,
 } = bookenpoint;

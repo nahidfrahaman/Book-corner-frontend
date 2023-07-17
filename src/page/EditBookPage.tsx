@@ -9,9 +9,12 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-misused-promises */
 import { useForm } from "react-hook-form";
-import { Toaster } from "react-hot-toast";
+import { Toaster, toast } from "react-hot-toast";
 import { useParams } from "react-router-dom";
-import { useGetSingleBookQuery } from "../redux/features/Book/bookendpoint";
+import {
+  useGetSingleBookQuery,
+  useUpdatedBookMutation,
+} from "../redux/features/Book/bookendpoint";
 
 interface SignupFormInputs {
   title: string;
@@ -23,14 +26,25 @@ interface SignupFormInputs {
 
 export default function EditBookPage() {
   const { id } = useParams();
-  console.log(id);
   const { data } = useGetSingleBookQuery(id);
   const book = data?.data;
   const { register, handleSubmit } = useForm<SignupFormInputs>();
-
+  const [updateBook, { data: updateData, isLoading }] =
+    useUpdatedBookMutation();
+  console.log(data);
   const onSubmit = (data: SignupFormInputs) => {
-    console.log(data);
+    const createdData = {
+      title: data.title,
+      author: data.author,
+      genre: data.genre,
+      publicationDate: data.publicationDate,
+      reviews: [],
+    };
+    updateBook(createdData);
   };
+  if (updateData) {
+    toast.success("book updated successfuly");
+  }
 
   return (
     <div>
@@ -142,7 +156,7 @@ export default function EditBookPage() {
 
                   <div className="col-span-6 sm:flex sm:items-center sm:gap-4">
                     <button className="inline-block shrink-0 rounded-md border border-tel-700 bg-teal-700 px-12 py-3 text-sm font-medium text-white transition hover:bg-transparent hover:text-teal-700 focus:outline-none focus:ring active:text-blue-500">
-                      Add new book
+                      update
                     </button>
                   </div>
                 </form>

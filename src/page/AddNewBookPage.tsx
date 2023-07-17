@@ -23,12 +23,12 @@ interface SignupFormInputs {
 export default function AddNewBookPage() {
   // const dispatch = useAppDispatch();
   const { register, handleSubmit } = useForm<SignupFormInputs>();
-  const [addNewBook, { data, isLoading }] = useAddNewBookMutation();
+  const [addNewBook, { data, isLoading, error }] = useAddNewBookMutation();
+
   if (isLoading) {
-    return <div>loading....</div>;
+    return <div>loadin...</div>;
   }
 
-  console.log(data);
   const onSubmit = (data: SignupFormInputs) => {
     const createdData = {
       title: data.title,
@@ -40,9 +40,12 @@ export default function AddNewBookPage() {
     console.log(createdData);
     addNewBook(createdData);
   };
-
   if (data) {
     toast.success("book added successfuly");
+  }
+
+  if (error?.data?.message) {
+    toast.error(error?.data?.message);
   }
 
   return (

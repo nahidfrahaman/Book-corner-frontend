@@ -1,11 +1,28 @@
+import jwt_decode from "jwt-decode";
 import { Toaster, toast } from "react-hot-toast";
 import { Link } from "react-router-dom";
+import { addtoken } from "../redux/features/auth/tokenSlice";
 import { isContentVisible } from "../redux/features/toggleContent/contentReducer";
 import { isUserExist } from "../redux/features/user/userSlice";
 import { useAppDispatch, useAppSelector } from "../redux/hooks";
 
+interface IDecode {
+  UserName: string;
+  email: string;
+  exp?: number;
+  iat?: number;
+}
+
 export default function Navbar() {
+  const token: string | null = localStorage.getItem("accessToken");
   const dispatch = useAppDispatch();
+  console.log("token from home:", token);
+  if (token) {
+    const decoded: IDecode = jwt_decode(token);
+    dispatch(addtoken(token));
+    dispatch(isUserExist(decoded.email));
+  }
+
   const { contentVisible } = useAppSelector((state) => state.contentVisible);
   const { email } = useAppSelector((state) => state.isUserExist);
 
