@@ -5,4 +5,5 @@ export interface IBooks {
   genre: string;
   publicationDate: Date;
   reviews: [];
+  img: string;
 }

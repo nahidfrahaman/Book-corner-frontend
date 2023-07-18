@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable @typescript-eslint/no-empty-function */
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
@@ -7,18 +9,15 @@ import { IBooks } from "../type/commonInterface";
 
 export default function AllBooks() {
   const [searchData, setSearchData] = useState<string | undefined>();
-  const [getAllBooks, { data }] = useGetallBooksMutation({
-    refetchOnMountOrArgChange: true,
-    pollingInterval: 30000,
-  });
-  console.log(data);
-  console.log(searchData);
 
-  const { register, handleSubmit } = useForm<SignupFormInputs>();
+  const [getAllBooks, { data }] = useGetallBooksMutation();
+
+  const { register, handleSubmit } = useForm();
   const [isInitialRender, setIsInitialRender] = useState(true);
 
-  const onSubmit = (inputData: string) => {
-    setSearchData(inputData.searchItem);
+  const onSubmit = (inputData: any) => {
+    const formData = inputData;
+    setSearchData(formData.searchItem);
   };
   useEffect(() => {
     if (isInitialRender) {

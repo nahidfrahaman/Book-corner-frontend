@@ -12,12 +12,13 @@ import { useForm } from "react-hook-form";
 import { Toaster, toast } from "react-hot-toast";
 import { useAddNewBookMutation } from "../redux/features/Book/bookendpoint";
 
-interface SignupFormInputs {
+export interface SignupFormInputs {
   title: string;
   author: string;
   genre: string;
   publicationDate: Date;
   review: [];
+  img: string;
 }
 
 export default function AddNewBookPage() {
@@ -36,6 +37,7 @@ export default function AddNewBookPage() {
       genre: data.genre,
       publicationDate: data.publicationDate,
       reviews: [],
+      img: data.img,
     };
     console.log(createdData);
     addNewBook(createdData);
@@ -44,8 +46,8 @@ export default function AddNewBookPage() {
     toast.success("book added successfuly");
   }
 
-  if (error?.data?.message) {
-    toast.error(error?.data?.message);
+  if (error) {
+    toast.error("failed to add book");
   }
 
   return (
@@ -130,6 +132,23 @@ export default function AddNewBookPage() {
                       id="genre"
                       className="mt-1 w-full rounded-md border-gray-200 bg-white text-sm text-gray-700 shadow-sm p-2"
                       {...register("genre", {
+                        required: "Genre is required",
+                      })}
+                    />
+                  </div>
+                  <div className="col-span-6 sm:col-span-6">
+                    <label
+                      htmlFor="Password"
+                      className="block text-sm font-medium text-gray-700"
+                    >
+                      Img url
+                    </label>
+
+                    <input
+                      type="text"
+                      id="genre"
+                      className="mt-1 w-full rounded-md border-gray-200 bg-white text-sm text-gray-700 shadow-sm p-2"
+                      {...register("img", {
                         required: "Genre is required",
                       })}
                     />

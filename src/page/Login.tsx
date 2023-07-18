@@ -11,7 +11,6 @@ import { Toaster, toast } from "react-hot-toast";
 import { Link, useNavigate } from "react-router-dom";
 import img from "../assets/undraw_sign_up_n6im (1).svg";
 import { useLoginUserMutation } from "../redux/features/user/userendpoint";
-import { useAppDispatch } from "../redux/hooks";
 
 interface SignupFormInputs {
   email: string;
@@ -22,8 +21,6 @@ interface SignupFormInputs {
 }
 
 export default function Login() {
-  const dispatch = useAppDispatch();
-
   const navigate = useNavigate();
   const { register, handleSubmit } = useForm<SignupFormInputs>();
   const [loginUser, { data, isLoading }] = useLoginUserMutation();
@@ -37,7 +34,7 @@ export default function Login() {
 
   if (isLoading) {
     return (
-      <div className="w-16 h-16 border-4 border-dashed rounded-full animate-spin dark:border-violet-400"></div>
+      <div className="w-16 mx-auto mt-20 h-16 border-4 border-dashed rounded-full animate-spin dark:border-violet-400"></div>
     );
   }
   const accessToken = data?.data?.accessToken;

@@ -1,7 +1,17 @@
+/* eslint-disable @typescript-eslint/no-non-null-assertion */
 import { Link } from "react-router-dom";
-import { IBooks } from "../../type/commonInterface";
 
-export default function BookCards({ book }: IBooks) {
+export interface IBook {
+  _id?: string | undefined | null;
+  title?: string;
+  author?: string;
+  genre?: string;
+  publicationDate?: Date;
+  reviews?: [];
+  img: string;
+}
+
+export default function BookCards({ book }: { book: IBook }) {
   const date = book.publicationDate;
 
   return (
@@ -12,7 +22,7 @@ export default function BookCards({ book }: IBooks) {
       >
         <img
           alt="Office"
-          src="https://images.unsplash.com/photo-1524758631624-e2822e304c36?ixlib=rb-1.2.1&ixid=MnwxMjA3fDF8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2070&q=80"
+          src={book?.img}
           className="h-56 w-full object-cover"
         />
 
@@ -20,7 +30,7 @@ export default function BookCards({ book }: IBooks) {
           <h2 className="font-bold">Title :{book.title}</h2>
           <h3>Author : {book.author}</h3>
           <p>Genre : {book.genre}</p>
-          <p>Publication date : {date.substring(0, 10)}</p>
+          <p>Publication date : {date!.toString().substring(0, 10)}</p>
         </div>
       </Link>
     </div>

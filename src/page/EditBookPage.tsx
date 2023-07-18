@@ -10,7 +10,7 @@
 /* eslint-disable @typescript-eslint/no-misused-promises */
 import { useForm } from "react-hook-form";
 import { Toaster, toast } from "react-hot-toast";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import {
   useGetSingleBookQuery,
   useUpdatedBookMutation,
@@ -25,13 +25,13 @@ interface SignupFormInputs {
 }
 
 export default function EditBookPage() {
+  const navigate = useNavigate();
   const { id } = useParams();
   const { data } = useGetSingleBookQuery(id);
   const book = data?.data;
   const { register, handleSubmit } = useForm<SignupFormInputs>();
-  const [updateBook, { data: updateData, isLoading }] =
-    useUpdatedBookMutation();
-  console.log(data);
+  const [updateBook, { data: updateData, error }] = useUpdatedBookMutation();
+  console.log("updated : ", updateData);
   const onSubmit = (data: SignupFormInputs) => {
     const createdData = {
       title: data.title,
@@ -40,10 +40,13 @@ export default function EditBookPage() {
       publicationDate: data.publicationDate,
       reviews: [],
     };
-    updateBook(createdData);
+    const id = book?._id;
+    console.log(id);
+    updateBook({ id, createdData });
   };
-  if (updateData) {
+  if (updateData && !error) {
     toast.success("book updated successfuly");
+    navigate("/allbookspage");
   }
 
   return (

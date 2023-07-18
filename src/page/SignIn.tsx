@@ -17,11 +17,7 @@ interface SignupFormInputs {
 }
 
 export default function SignUP() {
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm<SignupFormInputs>();
+  const { register, handleSubmit } = useForm<SignupFormInputs>();
   const [createUser, { data, isLoading, isError }] = useCreateUserMutation();
   console.log(isLoading, isError);
   const onSubmit = (data: SignupFormInputs) => {

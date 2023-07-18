@@ -8,8 +8,11 @@ import AddNewBookPage from "../page/AddNewBookPage";
 import EditBookPage from "../page/EditBookPage";
 import Login from "../page/LogIN";
 import NotFoundPage from "../page/NotFoundPage";
+import ReadinListBook from "../page/ReadinListBook";
 import SignUP from "../page/SignIn";
 import SingleBookDetails from "../page/SingleBookDetails";
+import WishList from "../page/WishList";
+import PrivateRoute from "./PrivateRoute";
 
 const router = createBrowserRouter([
   {
@@ -30,15 +33,31 @@ const router = createBrowserRouter([
       },
       {
         path: "/addnewbook",
-        element: <AddNewBookPage></AddNewBookPage>,
+        element: (
+          <PrivateRoute>
+            <AddNewBookPage></AddNewBookPage>,
+          </PrivateRoute>
+        ),
       },
       {
         path: "/bookDetails/:id",
         element: <SingleBookDetails></SingleBookDetails>,
       },
       {
+        path: "/wishlist",
+        element: <WishList></WishList>,
+      },
+      {
+        path: "/readinglist",
+        element: <ReadinListBook></ReadinListBook>,
+      },
+      {
         path: "/editBookPage/:id",
-        element: <EditBookPage></EditBookPage>,
+        element: (
+          <PrivateRoute>
+            <EditBookPage></EditBookPage>,
+          </PrivateRoute>
+        ),
       },
     ],
   },
